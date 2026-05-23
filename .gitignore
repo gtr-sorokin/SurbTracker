@@ -1,0 +1,4 @@
+.env
+app/last_state.json
+.idea/*
+app/__pycache__/*
