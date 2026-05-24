@@ -1,8 +1,8 @@
 name: Train Tracker
 
 on:
-  schedule:
-    - cron: "0,30 7-23 * * *"
+  #schedule:
+  #  - cron: "0,30 7-23 * * *"
 
   workflow_dispatch:
 
