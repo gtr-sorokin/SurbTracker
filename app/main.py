@@ -5,21 +5,28 @@ import os
 
 from rail import get_departures
 from telegram_client import send_message
-from state import load_state, save_state
+# from state import load_state, save_state
 
-def build_message(trains):
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+
+def build_message(trains, FROM):
+
+    if FROM == 'SUR':
+        first_line = "🚆 Surbiton → Waterloo"
+    else:
+        first_line = "🚆 Waterloo → Surbiton"
 
     lines = [
-        "🚆 Surbiton → Waterloo",
+        first_line,
         ""
     ]
 
     for train in trains:
 
         lines.append(
-            f"{train['time']} | "
-            f"{train['status']} | "
-            f"Platform {train['platform']}"
+            "%s | %s | Platform %s" % (train['time'], train['status'] if FROM == 'SUR' else train['destination'], train['platform'])
         )
 
     return "\n".join(lines)
@@ -27,27 +34,19 @@ def build_message(trains):
 
 def main():
 
-    trains = get_departures()
-
-    previous = load_state()
-
-    if previous == trains:
-        print(
-            "No changes detected"
-        )
-        return
-
-    message = build_message(
-        trains
+    london_time = datetime.now(
+        ZoneInfo("Europe/London")
     )
+
+    FROM = 'SUR' if london_time.hour < 12 else 'WAT'
+
+    trains = get_departures(FROM)
+
+    message = build_message(trains, FROM)
 
     send_message(message)
 
-    save_state(trains)
-
-    print(
-        "Telegram update sent"
-    )
+    print("Telegram update sent")
 
 
 if __name__ == "__main__":
