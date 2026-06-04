@@ -1,8 +1,8 @@
 name: Train Tracker
 
 on:
-  schedule:
-    - cron: "0,30 7-23 * * *"
+  #schedule:
+  #  - cron: "0,30 7-23 * * *"
 
   workflow_dispatch:
 
@@ -14,15 +14,22 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: "pip"
 
-      - run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - run: python app/main.py
+      - name: Run tracker
+        run: python app/main.py
         env:
           TRANSPORT_API_ID: ${{ secrets.TRANSPORT_API_ID }}
           TRANSPORT_API_KEY: ${{ secrets.TRANSPORT_API_KEY }}
