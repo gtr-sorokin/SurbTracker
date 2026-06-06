@@ -6,8 +6,6 @@ from telegram_client import send_message
 
 def get_buses(STOP_ID):
     url = f"https://api.tfl.gov.uk/StopPoint/{STOP_ID}/Arrivals"
-    print(url)
-
     return requests.get(url).json()
 
 
@@ -24,9 +22,9 @@ def main_buses(STOP_ID):
             b["expectedArrival"].replace("Z", "")
         )
 
-        message += "%s at %s:%s\n" % (b['lineName'], arrival.hour, arrival.minute)
+        message += "%s at %02i:%02i\n" % (b['lineName'], int(arrival.hour), int(arrival.minute))
         counter -= 1
-        if counter == 0:
+        if counter <= 0:
             break
 
     send_message(message)
