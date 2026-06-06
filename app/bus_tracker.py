@@ -21,7 +21,7 @@ def main_buses(STOP_ID):
             b["expectedArrival"].replace("Z", "")
         )
 
-        message_strings.append("%02i:%02i: %s\n" % (int(arrival.hour), int(arrival.minute), b['lineName']))
+        message_strings.append("%02i:%02i bus %s\n" % (int(arrival.hour), int(arrival.minute), b['lineName']))
         counter -= 1
         if counter <= 0:
             break
