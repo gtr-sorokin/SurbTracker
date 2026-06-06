@@ -16,7 +16,7 @@ def build_message(trains, FROM):
     if FROM == 'SUR':
         first_line = "🚆 Surbiton → Waterloo"
     else:
-        first_line = "🚆 Waterloo → Surbiton"
+        first_line = "🏠 Waterloo → Surbiton"
 
     lines = [
         first_line,
@@ -25,8 +25,13 @@ def build_message(trains, FROM):
 
     for train in trains:
 
+        extra_str = "" if FROM == 'SUR' else \
+            (train['status'] if train['status'] not in ['STARTS HERE', 'ON TIME'] else '')
+
         lines.append(
-            "%s | %s | Platform %s" % (train['time'], train['status'] if FROM == 'SUR' else train['destination'], train['platform'])
+            "%s | %s | Platform %s %s" % (train['time'],
+                                       train['status'] if FROM == 'SUR' else train['destination'],
+                                       train['platform'], extra_str)
         )
 
     return "\n".join(lines)
