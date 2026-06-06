@@ -13,19 +13,24 @@ def main_buses(STOP_ID):
 
     buses = get_buses(STOP_ID)
 
-    message = "🚌 Upcoming buses:\n"
-
     counter = 5
 
+    message_strings = []
     for b in buses:
         arrival = datetime.fromisoformat(
             b["expectedArrival"].replace("Z", "")
         )
 
-        message += "%s at %02i:%02i\n" % (b['lineName'], int(arrival.hour), int(arrival.minute))
+        message_strings.append("%02i:%02i: %s\n" % (int(arrival.hour), int(arrival.minute), b['lineName']))
         counter -= 1
         if counter <= 0:
             break
+
+    message_strings = sorted(message_strings)
+
+    message = "🚌 Upcoming buses:\n"
+    for m in message_strings:
+        message += m
 
     send_message(message)
 
