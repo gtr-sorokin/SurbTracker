@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  send-weather:
+  send-buses:
     runs-on: ubuntu-latest
 
     steps:
