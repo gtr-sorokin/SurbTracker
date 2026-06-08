@@ -6,6 +6,7 @@ import requests
 
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from datetime import timedelta
 
 # dotenv.load_dotenv()
 
@@ -79,6 +80,8 @@ def get_departures(FROM, num=5):
             ZoneInfo("Europe/London")
         )
 
+        london_time2 = london_time - timedelta(minutes=15)
+
         WAT_departures = load_departures_from_api(FROM)
         SUR_departures = load_departures_from_api('SUR')
 
@@ -90,7 +93,10 @@ def get_departures(FROM, num=5):
 
                     h, mins = w_train['aimed_departure_time'].split(':')
 
-                    if london_time.hour < int(h) or (london_time.hour == int(h) and london_time.minute <= int(mins)) or (london_time.hour == 23 and int(h) == 0):
+                    if (london_time.hour < int(h) or (london_time.hour == int(h) and london_time.minute <= int(mins)) or (london_time.hour == 23 and int(h) == 0)) or \
+                            (w_train.get('status', 'UNKNOWN') == 'LATE' and
+                             (london_time2.hour < int(h) or (london_time2.hour == int(h) and london_time2.minute <= int(mins)) or (london_time2.hour == 23 and int(h) == 0))
+                            ):
                         found_match = True
                         break
 
