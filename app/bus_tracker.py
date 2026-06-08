@@ -2,7 +2,7 @@ import requests
 from datetime import datetime
 
 from telegram_client import send_message
-
+from zoneinfo import ZoneInfo
 
 def get_buses(STOP_ID):
     url = f"https://api.tfl.gov.uk/StopPoint/{STOP_ID}/Arrivals"
@@ -21,7 +21,7 @@ def main_buses(STOP_ID):
             b["expectedArrival"].replace("Z", "")
         )
 
-        arrival = arrival.astimezone('London/Europe')
+        arrival = arrival.astimezone(ZoneInfo('London/Europe'))
 
         message_strings.append("%02i:%02i bus %s\n" % (int(arrival.hour), int(arrival.minute), b['lineName']))
         counter -= 1
