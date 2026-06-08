@@ -21,6 +21,8 @@ def main_buses(STOP_ID):
             b["expectedArrival"].replace("Z", "")
         )
 
+        arrival = arrival.astimezone('London/Europe')
+
         message_strings.append("%02i:%02i bus %s\n" % (int(arrival.hour), int(arrival.minute), b['lineName']))
         counter -= 1
         if counter <= 0:
