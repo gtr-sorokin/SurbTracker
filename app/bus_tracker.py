@@ -34,9 +34,9 @@ def main_buses(STOP_ID):
     for m in message_strings:
         message += m
 
-    print(message)
+    # print(message)
 
-    # send_message(message)
+    send_message(message)
 
 
 if __name__ == "__main__":
