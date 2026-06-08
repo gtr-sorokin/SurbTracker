@@ -18,7 +18,7 @@ def main_buses(STOP_ID):
     message_strings = []
     for b in buses:
         arrival = datetime.fromisoformat(
-            b["expectedArrival"].replace("Z", "")
+            b["expectedArrival"].replace("Z", "+00:00")
         )
 
         arrival = arrival.astimezone(ZoneInfo('Europe/London'))
@@ -34,7 +34,9 @@ def main_buses(STOP_ID):
     for m in message_strings:
         message += m
 
-    send_message(message)
+    print(message)
+
+    # send_message(message)
 
 
 if __name__ == "__main__":
